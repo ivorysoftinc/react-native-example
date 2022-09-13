@@ -46,6 +46,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           style={styles.button}
           onPress={onNativeAlertButtonPress}
         />
+        <Button
+          preset="secondary"
+          text="Navigate Profile"
+          style={styles.button}
+          onPress={() => navigation.navigate('profile')}
+        />
       </View>
     </SafeAreaView>
   );

@@ -7,16 +7,18 @@ import {
 } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/home';
 import AlertScreen, { AlertScreenParams } from '../screens/alert';
+import ProfileScreen from '../screens/profile';
 
 export type RootNavigatorParams = {
   home: undefined;
   alert: AlertScreenParams;
+  profile: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootNavigatorParams>();
 
 const options: Record<string, NativeStackNavigationOptions> = {
-  root: { headerShown: false },
+  root: {},
   modal: { presentation: 'containedTransparentModal' },
 };
 
@@ -26,6 +28,7 @@ const RootNavigator: React.FC = () => {
       <Stack.Navigator screenOptions={options.root}>
         <Stack.Screen name="home" component={HomeScreen} />
         <Stack.Screen name="alert" component={AlertScreen} options={options.modal} />
+        <Stack.Screen name="profile" component={ProfileScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
