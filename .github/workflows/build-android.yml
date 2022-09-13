@@ -1,0 +1,58 @@
+name: Build Android
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+env:
+  NODE_VERSION: 16
+
+jobs:
+  build:
+    name: Build Android
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        include:
+          - type: 'release'
+            task: 'assembleRelease'
+          # - type: 'staging'
+          #   task: 'assembleStaging'
+    steps:
+      - name: Check out git repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Set up JDK environment
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 11
+          cache: 'gradle'
+
+      - name: Restore yarn cache
+        uses: c-hive/gha-yarn-cache@v2
+
+      - name: Install packages
+        run: yarn install --frozen-lockfile
+
+      - name: Assemble ${{ matrix.type }} APK
+        run: cd android && ./gradlew ${{ matrix.task }} --no-daemon
+
+      - name: Compress artifact
+        run: |
+          cd android/app/build/outputs/apk/${{ matrix.type }}/
+          zip ${{ matrix.type }}.apk.zip app-${{ matrix.type }}.apk
+
+      - name: 'Upload artifact'
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.type }}.apk.zip
+          path: android/app/build/outputs/apk/${{ matrix.type }}/${{ matrix.type }}.apk.zip
+          retention-days: 2
