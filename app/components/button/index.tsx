@@ -8,7 +8,7 @@ import {
   TouchableOpacityProps,
 } from 'react-native';
 import presets, { ButtonPreset } from './button.preset';
-import Text from './';
+import Text from '../text';
 import { colors } from '../../utils/appearance';
 
 export interface ButtonProps extends TouchableOpacityProps {
