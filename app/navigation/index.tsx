@@ -19,7 +19,7 @@ const Stack = createNativeStackNavigator<RootNavigatorParams>();
 
 const options: Record<string, NativeStackNavigationOptions> = {
   root: {},
-  modal: { presentation: 'containedTransparentModal' },
+  modal: { presentation: 'containedTransparentModal', headerShown: false },
 };
 
 const RootNavigator: React.FC = () => {
